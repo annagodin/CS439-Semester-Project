@@ -51,7 +51,7 @@ def get_route_name(route_data, route_id):
 
 
 def write_result_data(vehicles):
-    with open('bus_data3.csv', 'a+', newline='') as file:
+    with open('bus_dataTESTING.csv', 'a+', newline='') as file:
         writer = csv.writer(file)
         # iterate through the buses that are on the specified route
         for bus in vehicles:
@@ -61,7 +61,10 @@ def write_result_data(vehicles):
             arrival_estimates = bus['arrival_estimates']
             for eta in arrival_estimates:
                 arrival_at_string = eta['arrival_at']
-                arrival_datetime = datetime.strptime(arrival_at_string, '%Y-%m-%dT%H:%M:%S%z')
+                arrival_at_string= arrival_at_string[:-6]
+                # print(arrival_at_string)
+                # exit(1)
+                arrival_datetime = datetime.strptime(arrival_at_string, '%Y-%m-%dT%H:%M:%S')
                 arrival_datetime = arrival_datetime.replace(tzinfo=None)
                 minutes_to_arrival = (arrival_datetime - current_datetime).seconds
                 minutes_to_arrival = round(minutes_to_arrival / 60)
