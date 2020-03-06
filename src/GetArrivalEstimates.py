@@ -51,7 +51,7 @@ def get_route_name(route_data, route_id):
 
 
 def write_result_data(vehicles):
-    with open('bus_data2.csv', 'a+', newline='') as file:
+    with open('bus_data3.csv', 'a+', newline='') as file:
         writer = csv.writer(file)
         # iterate through the buses that are on the specified route
         for bus in vehicles:
