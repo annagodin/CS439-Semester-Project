@@ -3,9 +3,10 @@ import json
 import time
 import requests
 import csv
+import sys
 
-# loop control variable, start at 1 hour = 3600 seconds
-a = 3600
+# loop control variable - 1 hour = 3600 seconds
+a = 46800
 
 with open('../stop_data.json') as json_file:
     stop_data = json.load(json_file)
@@ -51,7 +52,8 @@ def get_route_name(route_data, route_id):
 
 
 def write_result_data(vehicles):
-    with open('bus_data_VM_TEST.csv', 'a+', newline='') as file:
+    file_name = sys.argv[1]
+    with open(file_name, 'a+', newline='') as file:
         writer = csv.writer(file)
         # iterate through the buses that are on the specified route
         for bus in vehicles:
@@ -61,7 +63,7 @@ def write_result_data(vehicles):
             arrival_estimates = bus['arrival_estimates']
             for eta in arrival_estimates:
                 arrival_at_string = eta['arrival_at']
-                arrival_at_string= arrival_at_string[:-6]
+                arrival_at_string = arrival_at_string[:-6]
                 # print(arrival_at_string)
                 # exit(1)
                 arrival_datetime = datetime.strptime(arrival_at_string, '%Y-%m-%dT%H:%M:%S')
@@ -96,13 +98,19 @@ def write_result_data(vehicles):
                 # print("Stop Name: " + stop_name)
                 # print("Stop Lat: " + str(stop_lat))
                 # print("Stop Long: " + str(stop_long))
-                row = [str(arrival_datetime), str(current_datetime), weekday, str(minutes_to_arrival), route_id, route_name,
+                row = [str(arrival_datetime), str(current_datetime), weekday, str(minutes_to_arrival), route_id,
+                       route_name,
                        bus_id, str(bus_lat), str(bus_long), stop_id, stop_name, str(stop_lat), str(stop_long)]
                 print(row)
                 writer.writerow(row)
 
 
 # --------------------------------------------------------------------------------------------------------#
+
+
+if len(sys.argv) != 2:
+    print(">>> Error: Must specify file name to write data to \n>>> EXITING")
+    exit()
 
 url = "https://transloc-api-1-2.p.rapidapi.com/vehicles.json"
 
