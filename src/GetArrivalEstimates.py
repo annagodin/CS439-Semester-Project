@@ -134,7 +134,7 @@ while a > 0:
     f = open("response_info.log", "a+")
     f.write("time: " + str(current_datetime) + "\tresponse-code: " + str(response_code))
     if response_code == 429:
-        f.write("Too Many Requests")
+        f.write("\t Too Many Requests")
 
     f.write("\n")
 
