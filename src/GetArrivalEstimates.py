@@ -126,8 +126,18 @@ headers = {
 
 while a > 0:
     response = requests.request("GET", url, headers=headers, params=querystring)
+
     current_datetime = datetime.now()
     response_json = json.loads(response.text)
+
+    response_code = response.status_code
+    f = open("response_info.log", "a+")
+    f.write("time: " + str(current_datetime) + "\tresponse-code: " + str(response_code))
+    if response_code == 429:
+        f.write("Too Many Requests")
+
+    f.write("\n")
+
     # get vehicles that are on the specified route
     vehicles = response_json['data']['1323']
     write_result_data(vehicles)
